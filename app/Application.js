@@ -8,11 +8,18 @@ Ext.define('LoginApp.Application', {
 
     name: 'LoginApp',
 
-    quickTips: false,
-    platformConfig: {
-        desktop: {
-            quickTips: true
-        }
+    stores: [
+
+    ],
+
+    launch: function () {
+        var loggedIn;
+
+        loggedIn = localStorage.getItem('LoginAppLoggedIn');
+
+        Ext.create({
+            xtype: loggedIn ? 'app-main' : 'login'
+        })
     },
 
     onAppUpdate: function () {
