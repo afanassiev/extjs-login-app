@@ -24,12 +24,13 @@ Ext.define('LoginApp.view.login.Login', {
     }, {
       xtype: 'textfield',
       reference: 'password',
+      inputType: 'password',
       fieldLabel: 'Password',
       allowBlank: false
     }, {
       xtype: 'displayfield',
       hideEmptyLabel: false,
-      value: 'Password is required'
+      value: 'Please enter your password'
     }
   ],
   buttons: [{
