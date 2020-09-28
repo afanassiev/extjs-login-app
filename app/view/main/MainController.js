@@ -15,5 +15,15 @@ Ext.define('LoginApp.view.main.MainController', {
         if (choice === 'yes') {
             //
         }
+    },
+
+    onClickButton: function () {
+        localStorage.removeItem('LoginAppLoggedIn');
+
+        this.getView().destroy();
+        
+        Ext.create({
+            xtype: 'login'
+        });
     }
 });
