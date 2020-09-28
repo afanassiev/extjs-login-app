@@ -15,7 +15,8 @@ Ext.define('LoginApp.view.main.Main', {
 
         'LoginApp.view.main.MainController',
         'LoginApp.view.main.MainModel',
-        'LoginApp.view.main.List'
+        'LoginApp.view.main.List',
+        'LoginApp.store.Todo'
     ],
 
     controller: 'main',
@@ -81,30 +82,92 @@ Ext.define('LoginApp.view.main.Main', {
         }
     },
 
-    items: [{
-        title: 'Home',
-        iconCls: 'fa-home',
-        // The following grid shares a store with the classic version's grid as well!
-        items: [{
-            xtype: 'mainlist'
-        }]
-    }, {
-        title: 'Users',
-        iconCls: 'fa-user',
+    items: [
+        {
+            title: 'Todo list',
+            iconCls: 'fa-check',
+            items: [
+                {
+                    xtype: 'mainlist',
+                },
+                {
+                xtype: 'container',
+                cls: 'todo-container',
+                items: [{
+                    xtype: 'textfield',
+                    cls: 'todo-input',
+                    emptyText: 'Type and press "Enter"!',
+                    enableKeyEvents: true,
+                    listeners: {
+                        keypress: 'onTodoInputKeypress'
+                    }
+                }, {
+                    xtype: 'dataview',
+                    cls: 'todo-items',
+                    reference: 'dataview',
+                    bind: {
+                        store: '{todoStore}'
+                    },
+                    itemTpl: [
+                        '<div class="todo-item">',
+                        '<input type="checkbox" <tpl if="completed">checked</tpl> class="todo-checkbox"> ',
+                        '<span class="todo-text">{text}</span> ',
+                        '<button type="button" class="todo-remove x-fa fa-times"></button>',
+                        '</div>'
+                    ],
+                    listeners: {
+                        itemclick: 'onTodoItemClick',
+                        itemdblclick: 'onTodoItemDblClick'
+                    }
+                }, {
+                    xtype: 'container',
+                    cls: 'todo-footer',
+                    layout: 'hbox',
+                    hidden: true,
+                    bind: {
+                        hidden: '{!totalItems}'
+                    },
+                    items: [{
+                        xtype: 'toolbar',
+                        width: '100%',
+                        defaults: {
+                            listeners: {
+                                click: 'onTodoFilterClick'
+                            }
+                        },
+                        items: [{
+                            xtype: 'tbtext',
+                            bind: {
+                                text: '{totalItems} total item(s)'
+                            }
+                        },
+                            '->', {
+                            itemId: 'clear',
+                            cls: 'todo-clear-button',
+                            text: 'Clear completed',
+                            bind: {
+                                hidden: '{!hasCompleted}'
+                            }
+                        }, {
+                            itemId: 'all',
+                            text: 'All'
+                        }, {
+                            itemId: 'active',
+                            text: 'Active'
+                        }, {
+                            itemId: 'completed',
+                            text: 'Completed'
+                        }]
+                    }]
+                }]
+            }]
+
+        }, {
+        title: 'About',
+            iconCls: 'fa-question',
         bind: {
-            html: '{loremIpsum}'
+            html: '{about}'
         }
-    }, {
-        title: 'Groups',
-        iconCls: 'fa-users',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }, {
-        title: 'Settings',
-        iconCls: 'fa-cog',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }]
+    }
+]
 });
